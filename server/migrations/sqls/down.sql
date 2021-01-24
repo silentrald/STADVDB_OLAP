@@ -1,0 +1,10 @@
+DROP TABLE orders;
+DROP TABLE times;
+DROP TABLE order_details;
+DROP TABLE locations;
+DROP TABLE territories;
+DROP TABLE countries;
+DROP TABLE cities;
+DROP TABLE statuses;
+DROP TABLE product_lines;
+DROP TABLE product_codes;
