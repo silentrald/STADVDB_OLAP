@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const tables = {
-    time: 't',
+    period: 'p',
     location: 'l',
     order_detail: 'od'
 };
@@ -76,10 +76,14 @@ app.get('/', async (req, res) => {
 
     try {
         // Clean the dimensions
-        for (let i in dimensions) {
+        for (const i in dimensions) {
             dimensions[i] = JSON.parse(dimensions[i]);
-            const { d } = dimensions[i];
-            dimensions[i].t = tables[d];
+            const { where, table } = dimensions[i];
+            dimensions[i].short = tables[table];
+
+            if (where && where.length === 0) {
+                delete dimensions[i].where;
+            }
         }
 
         console.log(dimensions);
@@ -88,9 +92,9 @@ app.get('/', async (req, res) => {
             SELECT
         `;
 
-        for (let i in dimensions) {
-            const { t, g } = dimensions[i];
-            text += `${t}.${g} AS ${g},\n`;
+        for (const i in dimensions) {
+            const { short, hierarchy } = dimensions[i];
+            text += `${short}.${hierarchy} AS ${hierarchy},\n`;
         }
 
         text += `
@@ -99,22 +103,45 @@ app.get('/', async (req, res) => {
             orders fact
         `;
 
-        for (let i in dimensions) {
-            const { d, t } = dimensions[i];
+        for (const i in dimensions) {
+            const { table, short } = dimensions[i];
             text += `
                 JOIN
-                    ${d}s ${t} ON fact.${d}_id = ${t}.id
+                    ${table}s ${short} ON fact.${table}_id = ${short}.id
             `;
         }
         
         // DICE AND SLICE COMMANDS
+        let wheres = [];
+        for (const i in dimensions) {
+            const { short, hierarchy, ref, where } = dimensions[i];
+            if (!where) continue;
+            
+            
+            if (ref) {
+                const cleaned = where.join('\' OR name = \'');
+                wheres.push(`
+                ${short}.${hierarchy} IN (
+                    SELECT  id
+                    FROM    ${ref}
+                    WHERE   name = '${cleaned}'
+                )`);
+            } else {
+                const cleaned = where.join(', ');
+                wheres.push(`${short}.${hierarchy} IN (${cleaned})`);
+            }
+        }
+
+        if (wheres.length > 0) {
+            wheres = `WHERE ${wheres.join(' AND ')}\n`;
+            text += wheres;
+        }
         
         // ROLLUP AND DRILL DOWN
-        
         let groupby = '';
         for (let i in dimensions) {
-            const { t, g } = dimensions[i];
-            groupby += `${t}.${g},\n`;
+            const { short, hierarchy } = dimensions[i];
+            groupby += `${short}.${hierarchy},\n`;
         }
         groupby = groupby.substring(0, groupby.length - 2);
 
