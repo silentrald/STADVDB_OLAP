@@ -8,7 +8,6 @@
     "dev": "nodemon app",
     "lint": "eslint .",
     "migrate-up": "node migrations/up",
-    "db-insert": "node migrations/insert",
     "db-delete": "node migrations/delete",
     "migrate-down": "node migrations/down"
   },
