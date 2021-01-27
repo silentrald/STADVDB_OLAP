@@ -1,7 +1,7 @@
 <template>
-  <div id="main" class="row m-1">
-    <div class="col-3 card p-2 shadow-sm">
-      <h1>Columns</h1>
+  <div id="main" class="row m-1" style="background-color: #f5f5f5;">
+    <div class="col-3 m-2 card p-2 shadow-sm">
+      <h1>Tables</h1>
       <div
         v-for="selection in selections"
         :id="`${selection}-dimension`"
@@ -43,7 +43,7 @@
       </div>
       <hr>
     </div>
-    <div class="col card p-2 shadow-sm">
+    <div class="col m-2 card p-2 shadow-sm">
       <table v-if="data" class="table">
         <thead>
           <tr>
