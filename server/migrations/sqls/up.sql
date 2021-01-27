@@ -45,20 +45,13 @@ CREATE TABLE IF NOT EXISTS product_codes (
     name    VARCHAR(10) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS statuses (
-    id      SERIAL      PRIMARY KEY,
-    name    VARCHAR(10) NOT NULL UNIQUE
-);
-
 CREATE TABLE IF NOT EXISTS order_details (
     id                              SERIAL      PRIMARY KEY,
-    status_id                       INT         NOT NULL,
-    FOREIGN KEY(status_id)          REFERENCES  statuses(id),
     product_line_id                 INT         NOT NULL,
     FOREIGN KEY(product_line_id)    REFERENCES  product_lines(id),
     product_code_id                 INT         NOT NULL,
     FOREIGN KEY(product_code_id)    REFERENCES  product_codes(id),
-    UNIQUE(status_id, product_line_id, product_code_id)
+    UNIQUE(product_line_id, product_code_id)
 );
 
 -- ORDERS

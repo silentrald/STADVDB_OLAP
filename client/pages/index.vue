@@ -70,14 +70,13 @@ import Multiselect from 'vue-multiselect'
 const hierarchies = {
   period: ['year', 'quarter', 'month'],
   location: ['territory_id', 'country_id', 'city_id'],
-  order_detail: ['status_id', 'product_line_id', 'product_code_id']
+  order_detail: ['product_line_id', 'product_code_id']
 }
 
 const references = {
   territory_id: 'territories',
   country_id: 'countries',
   city_id: 'cities',
-  status_id: 'statuses',
   product_line_id: 'product_lines',
   product_code_id: 'product_codes'
 }
@@ -96,12 +95,6 @@ export default {
         order_detail: {}
       },
       table: {},
-      territory_id: {},
-      country_id: {},
-      city_id: {},
-      product_line_id: {},
-      product_code_id: {},
-      status_id: {},
       columns: [],
       names: {},
       data: undefined,
