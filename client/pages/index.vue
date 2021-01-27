@@ -16,7 +16,7 @@
       <h1>Dimensions</h1>
       <div v-for="(dim, index) in dimensions" :key="dim.table" class="mt-2 dimension-container">
         <a href="javascript:;" @click="removeDimension(index)">
-          <i class="far fa-times-circle text-danger"></i>
+          <i class="far fa-times-circle text-danger" />
         </a>
         Dimension {{ index + 1 }}: <b>{{ dim.table }}</b> <br>
         <button type="button" class="btn btn-custom btn-success" @click="rollup(index)">
@@ -37,35 +37,38 @@
           :options="Object.values(names[dim.hierarchy])"
           :multiple="true"
           :close-on-select="false"
-          @input="query"
           class="mt-2"
+          @input="query"
         />
       </div>
       <hr>
     </div>
-
-    <div class="col data-section">
-      <table v-if="data">
+    <div class="col card p-2 shadow-sm">
+      <table v-if="data" class="table">
         <thead>
-          <th v-for="col in columns" :key="col">
-            <div v-if="references[col] === undefined">
-              {{ col }}
-            </div>
-            <div v-else>
-              {{ references[col] }}
-            </div>
-          </th>
+          <tr>
+            <th v-for="col in columns" :key="col">
+              <div v-if="references[col] === undefined">
+                {{ col }}
+              </div>
+              <div v-else>
+                {{ references[col] }}
+              </div>
+            </th>
+          </tr>
         </thead>
-        <tr v-for="(obj, index) in data" :key="index">
-          <td v-for="(val, key) in obj" :key="key">
-            <div v-if="names[key] != undefined">
-              {{ names[key][val] }}
-            </div>
-            <div v-else>
-              {{ val }}
-            </div>
-          </td>
-        </tr>
+        <tbody>
+          <tr v-for="(obj, index) in data" :key="index">
+            <td v-for="(val, key) in obj" :key="key">
+              <div v-if="names[key] != undefined">
+                {{ names[key][val] }}
+              </div>
+              <div v-else>
+                {{ val }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -91,7 +94,7 @@ const references = {
 export default {
   // ignore
   components: { multiselect: Multiselect },
-  
+
   data () {
     return {
       selections: ['period', 'location', 'order_detail'],
