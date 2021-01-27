@@ -11,7 +11,19 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "stylesheet", type: "text/css", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" },
+      { rel: "stylesheet",
+        href: "https://use.fontawesome.com/releases/v5.15.1/css/all.css",
+        integrity : "sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp",
+        crossorigin : "anonymous"
+      },
+      { rel: "stylesheet", type: "text/css", href: "https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" },
+    ],
+    script: [
+      { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW'},
+      { src: 'https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js'},
+      { src: "https://code.jquery.com/jquery-3.5.1.js", integrity: "sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=", crossorigin: "anonymous"}
     ]
   },
 
