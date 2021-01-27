@@ -26,10 +26,10 @@
           Drilldown
         </button>
         <button type="button" class="btn btn-secondary" @click="up(index)">
-          Up <i class="fas fa-arrow-up" />
+          Move Up <i class="fas fa-arrow-up" />
         </button>
         <button type="button" class="btn btn-secondary" @click="down(index)">
-          Down <i class="fas fa-arrow-down" />
+          Move Down <i class="fas fa-arrow-down" />
         </button>
         <multiselect
           v-if="references[dim.hierarchy]"
@@ -42,6 +42,7 @@
         />
       </div>
       <hr>
+      <small>Gerald Dalan, Jacob Darvin, Pauline Gayle, Stephen Salamante, Ira Villanueva</small>
     </div>
     <div class="col m-2 card p-2 shadow-sm">
       <table v-if="data" class="table">
