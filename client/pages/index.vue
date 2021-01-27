@@ -1,66 +1,77 @@
 <template>
-  <div id="main">
-    <div
-      v-for="selection in selections"
-      :id="`${selection}-dimension`"
-      :key="selection"
-      class="dimension"
-    >
-      {{ selection }}
-      <button @click="addDimension(selection)">
-        ADD
-      </button>
+  <div id="main" class="row m-1" style="background-color: #f5f5f5;">
+    <div class="col-3 m-2 card p-2 shadow-sm">
+      <h1>Tables</h1>
+      <div
+        v-for="selection in selections"
+        :id="`${selection}-dimension`"
+        :key="selection"
+        class="dimension"
+      >
+        <button type="button" class="btn btn-custom btn-success" @click="addDimension(selection)">
+          <b>+</b> {{ selection }}
+        </button>
+      </div>
+      <hr>
+      <h1>Dimensions</h1>
+      <div v-for="(dim, index) in dimensions" :key="dim.table" class="mt-2 dimension-container">
+        <a href="javascript:;" @click="removeDimension(index)">
+          <i class="far fa-times-circle text-danger" />
+        </a>
+        Dimension {{ index + 1 }}: <b>{{ dim.table }}</b> <br>
+        <button type="button" class="btn btn-custom btn-success" @click="rollup(index)">
+          Rollup
+        </button>
+        <button type="button" class="btn btn-custom btn-success" @click="drilldown(index)">
+          Drilldown
+        </button>
+        <button type="button" class="btn btn-secondary" @click="up(index)">
+          Move Up <i class="fas fa-arrow-up" />
+        </button>
+        <button type="button" class="btn btn-secondary" @click="down(index)">
+          Move Down <i class="fas fa-arrow-down" />
+        </button>
+        <multiselect
+          v-if="references[dim.hierarchy]"
+          v-model="dim.where"
+          :options="Object.values(names[dim.hierarchy])"
+          :multiple="true"
+          :close-on-select="false"
+          class="mt-2"
+          @input="query"
+        />
+      </div>
+      <hr>
+      <small>Gerald Dalan, Jacob Darvin, Pauline Gayle, Stephen Salamante, Ira Villanueva</small>
     </div>
-
-    <div v-for="(dim, index) in dimensions" :key="dim.table">
-      Dimension {{ index + 1 }}: {{ dim.table }}
-      <button @click="rollup(index)">
-        Rollup
-      </button>
-      <button @click="drilldown(index)">
-        Drilldown
-      </button>
-      <button @click="removeDimension(index)">
-        Remove
-      </button>
-      <button @click="up(index)">
-        Up ⬆
-      </button>
-      <button @click="down(index)">
-        Down ⬇
-      </button>
-      <multiselect
-        v-if="references[dim.hierarchy]"
-        v-model="dim.where"
-        :options="Object.values(names[dim.hierarchy])"
-        :multiple="true"
-        :close-on-select="false"
-        @input="query"
-      />
+    <div class="col m-2 card p-2 shadow-sm">
+      <table v-if="data" class="table">
+        <thead>
+          <tr>
+            <th v-for="col in columns" :key="col">
+              <div v-if="references[col] === undefined">
+                {{ col }}
+              </div>
+              <div v-else>
+                {{ references[col] }}
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(obj, index) in data" :key="index">
+            <td v-for="(val, key) in obj" :key="key">
+              <div v-if="names[key] != undefined">
+                {{ names[key][val] }}
+              </div>
+              <div v-else>
+                {{ val }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <table v-if="data">
-      <thead>
-        <th v-for="col in columns" :key="col">
-          <div v-if="references[col] === undefined">
-            {{ col }}
-          </div>
-          <div v-else>
-            {{ references[col] }}
-          </div>
-        </th>
-      </thead>
-      <tr v-for="(obj, index) in data" :key="index">
-        <td v-for="(val, key) in obj" :key="key">
-          <div v-if="names[key] != undefined">
-            {{ names[key][val] }}
-          </div>
-          <div v-else>
-            {{ val }}
-          </div>
-        </td>
-      </tr>
-    </table>
   </div>
 </template>
 
@@ -212,11 +223,24 @@ export default {
 
 <style scoped>
 .dimension {
-  width: 100px;
-  padding: 8px 4px;
-  text-align: center;
-
-  color: white;
-  background-color: blue;
+  width: 200px;
+  padding: 2px;
+  font-weight: bold;
 }
+
+.dimension-container {
+  background-color: white;
+  border: 1px solid #f2f2f2;
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+
+.btn-custom {
+  background-color: #41b883 !important;
+}
+
+.data-section {
+  background-color: #fafafa
+}
+
 </style>
